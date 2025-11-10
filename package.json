@@ -1,0 +1,21 @@
+{
+  "name": "com.kott.utilities",
+  "displayName": "Kott Utilities",
+  "unity": "6000.0",
+  "keywords": [
+    "utility"
+  ],
+  "version": "1.0.0",
+  "description": "Editor and runtime utilities.",
+  "author": {
+    "name": "Paul Kloetzing",
+    "email": "kloetzing.paul@gmail.com"
+  },
+  "contributors": [
+    "Paul Kloetzing"
+  ],
+  "licensesUrl": "",
+  "changelogUrl": "",
+  "documentationUrl": "",
+  "dependencies": {}
+}
