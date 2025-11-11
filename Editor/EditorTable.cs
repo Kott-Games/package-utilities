@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Kott.Utilities
+namespace ToG.Utility
 {
     public class EditorTableColumn
     {

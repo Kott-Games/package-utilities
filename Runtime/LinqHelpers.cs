@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Kott.Utilities
+namespace ToG.Utility
 {
     public static class LinqHelpers
     {

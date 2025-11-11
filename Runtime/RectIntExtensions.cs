@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Kott.Utilities
+namespace ToG.Utility
 {
     public static class RectIntExtensions
     {
