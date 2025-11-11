@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ToG.Utility
+namespace Kott.Utilities
 {
     public static class CustomGUI
     {

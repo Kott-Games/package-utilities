@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ToG.Utility
+namespace Kott.Utilities
 {
     [CustomPropertyDrawer(typeof(GenericListAttribute))]
     public class GenericListDrawer : PropertyDrawer

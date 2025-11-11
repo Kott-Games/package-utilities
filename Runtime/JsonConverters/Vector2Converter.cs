@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace ToG.Config.Converters
+namespace Kott.Utilities.JsonConverters
 {
     public class Vector2Converter : JsonConverter<Vector2>
     {
