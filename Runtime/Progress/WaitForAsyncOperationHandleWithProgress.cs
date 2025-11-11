@@ -1,9 +1,10 @@
-using Kott.Utilities.Progress;
+#if UNITY_ADDRESSABLES
+
 using System;
 using System.Collections;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Kott.Utilities.Addressables
+namespace Kott.Utilities.Progress
 {
     public class WaitForAsyncOperationHandleWithProgress : IEnumerator
     {
@@ -28,3 +29,5 @@ namespace Kott.Utilities.Addressables
         { }
     }
 }
+
+#endif
