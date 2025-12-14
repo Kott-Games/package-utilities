@@ -21,6 +21,7 @@ namespace Kott.Utilities.Progress
 
         public bool MoveNext()
         {
+            if (!_opHandle.IsValid()) return false;
             _progress.Report(new(_opHandle.PercentComplete, null));
             return !_opHandle.IsDone;
         }
