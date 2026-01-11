@@ -17,16 +17,36 @@ namespace Kott.Utilities
 
         [SerializeField] private List<Pair> _pairs = new();
 
+        [SerializeField] private bool _hasNullValue;
+        [SerializeField] private TValue _nullValue;
+
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            _pairs.Clear();
-            _pairs.AddRange(this.Select(kvp => new Pair { Key = kvp.Key, Value = kvp.Value }));
+            // if (_pairs == null) return;
+            // _pairs.Clear();
+            // if (_hasNullValue)
+            // {
+            //     _pairs.Add(new Pair { Key = default, Value = _nullValue });
+            // }
+            // _pairs.AddRange(this.Select(kvp => new Pair { Key = kvp.Key, Value = kvp.Value }));
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
+            if (_pairs == null) return;
+
             this.Clear();
-            _pairs.ForEach(pair => this[pair.Key] = pair.Value);
+            _hasNullValue = false;
+
+            foreach (Pair pair in _pairs)
+            {
+                if (pair.Key == null)
+                {
+                    _nullValue = pair.Value;
+                    continue;
+                }
+                this[pair.Key] = pair.Value;
+            }
         }
     }
 }
