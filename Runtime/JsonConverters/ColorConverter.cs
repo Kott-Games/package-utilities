@@ -6,6 +6,8 @@ namespace Kott.Utilities.JsonConverters
 {
     public class ColorConverter : JsonConverter<Color>
     {
+        public override bool CanRead => false;
+
         public override Color ReadJson(JsonReader reader, Type objectType, Color existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();

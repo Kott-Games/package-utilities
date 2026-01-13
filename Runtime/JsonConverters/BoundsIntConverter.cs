@@ -6,6 +6,8 @@ namespace Kott.Utilities.JsonConverters
 {
     public class BoundsIntConverter : JsonConverter<BoundsInt>
     {
+        public override bool CanRead => false;
+
         public override BoundsInt ReadJson(JsonReader reader, Type objectType, BoundsInt existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();

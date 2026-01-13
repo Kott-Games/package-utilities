@@ -6,6 +6,8 @@ namespace Kott.Utilities.JsonConverters
 {
     public class RectIntConverter : JsonConverter<RectInt>
     {
+        public override bool CanRead => false;
+
         public override RectInt ReadJson(JsonReader reader, Type objectType, RectInt existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();

@@ -6,6 +6,8 @@ namespace Kott.Utilities.JsonConverters
 {
     public class QuaternionConverter : JsonConverter<Quaternion>
     {
+        public override bool CanRead => false;
+
         public override Quaternion ReadJson(JsonReader reader, Type objectType, Quaternion existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();

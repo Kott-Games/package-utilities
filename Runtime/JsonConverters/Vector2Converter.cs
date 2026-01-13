@@ -6,6 +6,8 @@ namespace Kott.Utilities.JsonConverters
 {
     public class Vector2Converter : JsonConverter<Vector2>
     {
+        public override bool CanRead => false;
+
         public override Vector2 ReadJson(JsonReader reader, Type objectType, Vector2 existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
