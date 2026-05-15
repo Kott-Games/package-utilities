@@ -6,8 +6,8 @@ namespace Kott.Utilities.Progress
 {
     public class WaitForAsyncOperationWithProgress : IEnumerator
     {
-        private AsyncOperation _op;
-        private IProgress<ProgressReport> _progress;
+        private readonly AsyncOperation _op;
+        private readonly IProgress<ProgressReport> _progress;
 
         public WaitForAsyncOperationWithProgress(AsyncOperation op, IProgress<ProgressReport> progress)
         {
@@ -19,7 +19,7 @@ namespace Kott.Utilities.Progress
 
         public bool MoveNext()
         {
-            _progress.Report(new(_op.progress, null));
+            _progress?.Report(new ProgressReport(_op.progress, null));
             return !_op.isDone;
         }
 

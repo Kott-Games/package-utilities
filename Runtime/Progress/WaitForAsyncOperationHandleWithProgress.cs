@@ -9,7 +9,7 @@ namespace Kott.Utilities.Progress
     public class WaitForAsyncOperationHandleWithProgress : IEnumerator
     {
         private AsyncOperationHandle _opHandle;
-        private IProgress<ProgressReport> _progress;
+        private readonly IProgress<ProgressReport> _progress;
 
         public WaitForAsyncOperationHandleWithProgress(AsyncOperationHandle op, IProgress<ProgressReport> progress)
         {
@@ -22,7 +22,7 @@ namespace Kott.Utilities.Progress
         public bool MoveNext()
         {
             if (!_opHandle.IsValid()) return false;
-            _progress.Report(new(_opHandle.PercentComplete, null));
+            _progress?.Report(new ProgressReport(_opHandle.PercentComplete, null));
             return !_opHandle.IsDone;
         }
 

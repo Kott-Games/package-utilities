@@ -6,8 +6,8 @@ namespace Kott.Utilities.Progress
 {
     public class WaitForTaskWithProgress : IEnumerator
     {
-        private Task _task;
-        private IProgress<ProgressReport> _progress;
+        private readonly Task _task;
+        private readonly IProgress<ProgressReport> _progress;
 
         public object Current => null;
 
@@ -19,17 +19,15 @@ namespace Kott.Utilities.Progress
 
         public bool MoveNext()
         {
-            if (_progress != null)
-            {
-                TaskStatus status = _task.Status;
-                float progress =
-                    status <= TaskStatus.WaitingToRun ? 0f :
-                    status <= TaskStatus.Running ? 0.1f :
-                    status <= TaskStatus.WaitingForChildrenToComplete ? 0.9f : 1f;
+            if (_progress == null) return !_task.IsCompleted;
+            
+            TaskStatus status = _task.Status;
+            float progress =
+                status <= TaskStatus.WaitingToRun ? 0f :
+                status <= TaskStatus.Running ? 0.1f :
+                status <= TaskStatus.WaitingForChildrenToComplete ? 0.9f : 1f;
 
-                _progress.Report(new(progress, status.ToString()));
-            }
-
+            _progress.Report(new ProgressReport(progress, status.ToString()));
             return !_task.IsCompleted;
         }
 

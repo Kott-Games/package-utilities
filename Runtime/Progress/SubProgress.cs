@@ -4,7 +4,7 @@ namespace Kott.Utilities.Progress
 {
     public class SubProgress : IProgress<ProgressReport>
     {
-        private IProgress<ProgressReport> _progress;
+        private readonly IProgress<ProgressReport> _progress;
 
         public ProgressReport Start;
         public float Scale;
@@ -18,7 +18,7 @@ namespace Kott.Utilities.Progress
         {
             report.Info = CombineInfo(report.Info);
             report.Progress = Start.Progress + report.Progress * Scale;
-            _progress.Report(report);
+            _progress?.Report(report);
         }
 
         private string CombineInfo(string info)
