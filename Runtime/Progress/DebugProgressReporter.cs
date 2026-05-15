@@ -11,8 +11,8 @@ namespace Kott.Utilities.Progress
 
         public void Report(ProgressReport value)
         {
-#if UNITY_EDITOR
-            Debug.Log($"[Bootstrap] {value.Progress * 100f,5:##0.0}% - {value.Info}");
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            Debug.Log($"[DebugProgressReporter] {value.Progress * 100f,5:##0.0}% - {value.Info}");
 #endif
         }
     }
