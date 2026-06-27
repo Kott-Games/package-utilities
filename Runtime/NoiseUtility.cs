@@ -5,59 +5,24 @@ namespace Kott.Utilities
 	/// </summary>
     public static class NoiseUtility
     {
-	    public static uint GetUInt(int position, uint seed)
+	    /// <summary>
+	    /// Samples a pseudo-random noise value from an infinite virtual 1-dimensional world
+	    /// at the given <paramref name="position"/>.
+	    /// Each <paramref name="seed"/> defines a unique world to sample from.
+	    /// </summary>
+	    public static NoiseValue SampleValue(int position, uint seed)
 	    {
-		    return PseudoRandomNoiseValue(position, seed);
+		    uint value = SquirrelNoise5(position, seed);
+		    return new NoiseValue(value);
 	    }
 	    
-	    public static uint GetUIntRange(int position, uint seed, uint min, uint max)
+	    /// <inheritdoc cref="SampleValue"/>
+	    public static NoiseValueLong SampleValueLong(int position, uint seed)
 	    {
-		    if (min == max) return min;
-		    if (min > max) (min, max) = (max, min);
-		    
-		    uint delta = max - min;
-		    
-		    float range01 = GetFloat01(position, seed);
-		    uint randomDelta = (uint)((delta + 1) * range01);
-		    if (randomDelta == delta + 1) randomDelta = delta;
-		    
-		    return min + randomDelta;
-	    }
-	    
-	    public static int GetInt(int position, uint seed)
-	    {
-		    return unchecked((int)PseudoRandomNoiseValue(position, seed));
-	    }
-	    
-	    public static int GetIntRange(int position, uint seed, int min, int max)
-	    {
-		    if (min == max) return min;
-		    if (min > max) (min, max) = (max, min);
-		    
-		    uint delta = (uint)(max - min);
-		    
-		    float range01 = GetFloat01(position, seed);
-		    int randomDelta = (int)((delta + 1) * range01);
-		    if (randomDelta == delta + 1) randomDelta = delta;
-		    
-		    return min + randomDelta;
-	    }
-	    
-	    public static float GetFloat01(int position, uint seed)
-	    {
-		    // 23 bits float mantissa
-		    const uint mantissaMask = 0x7FFFFF;
-		    const float maxMantissaValue = (float)mantissaMask;
-		    
-		    uint bits = PseudoRandomNoiseValue(position, seed);
-		    float mantissaValue = bits & mantissaMask;
-		    
-		    return mantissaValue / maxMantissaValue; 
-	    }
-	    
-	    public static uint PseudoRandomNoiseValue(int position, uint seed)
-	    {
-		    return SquirrelNoise5(position, seed);
+		    ulong value0 = SquirrelNoise5(position, seed);
+		    ulong value1 = SquirrelNoise5(position, seed + 1);
+		    ulong value = (value1 << 32) | value0;
+		    return new NoiseValueLong(value);
 	    }
 	    
 	    /// <remarks>
