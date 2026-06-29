@@ -20,10 +20,5 @@ namespace Kott.Utilities
         {
             return NoiseUtility.SampleValue(_position++, _seed);
         }
-
-        public NoiseValueLong NextLong()
-        {
-            return NoiseUtility.SampleValueLong(_position++, _seed);
-        }
     }
 }

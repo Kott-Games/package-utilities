@@ -42,40 +42,142 @@ namespace Kott.Utilities
         }
 
         /// <summary>
-        ///     Converts the noise value to an <see langword="uint"/>
-        ///     in the range [ 0 ; 4294967295 ].
+        ///     Converts the noise value to aa <see langword="uint"/>
+        ///     in the range [ 0 ; <paramref name="max"/> ).
         /// </summary>
+        /// <param name="max">Exclusive upper bounds.</param>
         /// <param name="distribution">
         ///     Optional distribution to transform the output value.
         ///     <see langword="null"/> means uniform distribution.
         /// </param>
-        public uint AsUInt(IDistribution distribution = null)
+        /// <remarks>
+        ///     In the case where <paramref name="max"/> is less or equal to 0
+        ///     the returned value will be 0, violating mathematical
+        ///     correctness (the range [ x ; x ) would be considered empty) for the sake of
+        ///     developer quality-of-life.
+        /// </remarks>
+        public uint AsUInt(uint max, IDistribution distribution = null)
         {
+            if (max <= 0) return 0;
+            
             if (distribution == null)
             {
-                return Bits;
+                ulong overflowValue = (ulong)Bits * max;
+                return unchecked((uint)(overflowValue >> 32));
             }
 
             float range01 = AsFloat01(distribution);
-            return (uint)(uint.MaxValue * range01);
+            return (uint)(range01 * max);
+        }
+
+        /// <summary>
+        ///     Converts the noise value to an <see langword="uint"/>
+        ///     in the range [ <paramref name="min"/> ; <paramref name="max"/> ).
+        /// </summary>
+        /// <param name="min">Inclusive lower bounds.</param>
+        /// <param name="max">Exclusive upper bounds.</param>
+        /// <param name="distribution">
+        ///     Optional distribution to transform the output value.
+        ///     <see langword="null"/> means uniform distribution.
+        /// </param>
+        /// <remarks>
+        ///     In the case where <paramref name="max"/> is less or equal to <paramref name="min"/>
+        ///     the returned value will be <paramref name="min"/>, violating mathematical
+        ///     correctness (the range [ x ; x ) would be considered empty) for the sake of
+        ///     developer quality-of-life.
+        /// </remarks>
+        public uint AsUInt(uint min, uint max, IDistribution distribution = null)
+        {
+            if (max <= min)
+            {
+                return min;
+            }
+
+            if (distribution == null)
+            {
+                ulong overflowValue = (ulong)Bits * (max - min);
+                return min + unchecked((uint)(overflowValue >> 32));
+            }
+
+            float range01 = AsFloat01(distribution);
+            return min + (uint)(range01 * (max - min));
+        }
+        
+        /// <summary>
+        ///     Converts the noise value to aa <see langword="int"/>
+        ///     in the range [ 0 ; <paramref name="max"/> ).
+        /// </summary>
+        /// <param name="max">Exclusive upper bounds.</param>
+        /// <param name="distribution">
+        ///     Optional distribution to transform the output value.
+        ///     <see langword="null"/> means uniform distribution.
+        /// </param>
+        /// <remarks>
+        ///     In the case where <paramref name="max"/> is less or equal to 0
+        ///     the returned value will be 0, violating mathematical
+        ///     correctness (the range [ x ; x ) would be considered empty) for the sake of
+        ///     developer quality-of-life.
+        /// </remarks>
+        public int AsInt(int max, IDistribution distribution = null)
+        {
+            if (max <= 0) return 0;
+            
+            if (distribution == null)
+            {
+                const int iOffset = int.MinValue;
+                const uint uOffset = unchecked((uint)iOffset);
+                
+                uint uMax = unchecked((uint)(max + int.MinValue));
+                
+                ulong overflowValue = (ulong)Bits * (uMax - uOffset);
+                uint uVal = uOffset + unchecked((uint)(overflowValue >> 32));
+                
+                return unchecked((int)(uVal + uOffset));
+            }
+
+            float range01 = AsFloat01(distribution);
+            return (int)(range01 * max);
         }
 
         /// <summary>
         ///     Converts the noise value to an <see langword="int"/>
-        ///     in the range [ -2147483648 ; 2147483647 ].
+        ///     in the range [ <paramref name="min"/> ; <paramref name="max"/> ).
         /// </summary>
+        /// <param name="min">Inclusive lower bounds.</param>
+        /// <param name="max">Exclusive upper bounds.</param>
         /// <param name="distribution">
         ///     Optional distribution to transform the output value.
         ///     <see langword="null"/> means uniform distribution.
         /// </param>
-        public int AsInt(IDistribution distribution = null)
+        /// <remarks>
+        ///     In the case where <paramref name="max"/> is less or equal to <paramref name="min"/>
+        ///     the returned value will be <paramref name="min"/>, violating mathematical
+        ///     correctness (the range [ x ; x ) would be considered empty) for the sake of
+        ///     developer quality-of-life.
+        /// </remarks>
+        public int AsInt(int min, int max, IDistribution distribution = null)
         {
-            if (distribution == null)
+            if (max <= min)
             {
-                return unchecked((int)Bits);
+                return min;
             }
 
-            return int.MinValue + unchecked((int)AsUInt(distribution));
+            if (distribution == null)
+            {
+                const int iOffset = int.MinValue;
+                const uint uOffset = unchecked((uint)iOffset);
+                
+                uint uMax = unchecked((uint)(max + iOffset));
+                uint uMin = unchecked((uint)(min + iOffset));
+                
+                ulong overflowValue = (ulong)Bits * (uMax - uMin);
+                uint uVal = uMin + unchecked((uint)(overflowValue >> 32));
+                
+                return unchecked((int)(uVal + uOffset));
+            }
+
+            float range01 = AsFloat01(distribution);
+            return min + (int)(range01 * (max - min));
         }
 
         /// <summary>
@@ -101,102 +203,6 @@ namespace Kott.Utilities
         }
 
         /// <summary>
-        ///     Converts the noise value to an <see langword="uint"/>
-        ///     in the range [ 0 ; <paramref name="max"/> ].
-        /// </summary>
-        /// <param name="max">Inclusive upper bounds.</param>
-        /// <param name="distribution">
-        ///     Optional distribution to transform the output value.
-        ///     <see langword="null"/> means uniform distribution.
-        /// </param>
-        public uint AsUInt(uint max, IDistribution distribution = null)
-        {
-            if (max == 0)
-            {
-                return 0;
-            }
-
-            if (max == uint.MaxValue)
-            {
-                return AsUInt(distribution);
-            }
-
-            float range01 = AsFloat01(distribution);
-
-            // add 1 to catch the single unlikely case where range01 is exactly 1
-            // then we would not round down and end with a wrong probability for max
-            uint value = (uint)((max + 1) * range01);
-            if (value == max + 1)
-            {
-                return max;
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        ///     Converts the noise value to an <see langword="uint"/>
-        ///     in the range [ <paramref name="min"/> ; <paramref name="max"/> ].
-        /// </summary>
-        /// <param name="min">Inclusive lower bounds.</param>
-        /// <param name="max">Inclusive upper bounds.</param>
-        /// <param name="distribution">
-        ///     Optional distribution to transform the output value.
-        ///     <see langword="null"/> means uniform distribution.
-        /// </param>
-        public uint AsUInt(uint min, uint max, IDistribution distribution = null)
-        {
-            if (max < min)
-            {
-                return min;
-            }
-
-            uint delta = max - min;
-            return min + AsUInt(delta, distribution);
-        }
-
-        /// <summary>
-        ///     Converts the noise value to an <see langword="int"/>
-        ///     in the range [ 0 ; <paramref name="max"/> ].
-        /// </summary>
-        /// <param name="max">Inclusive upper bounds.</param>
-        /// <param name="distribution">
-        ///     Optional distribution to transform the output value.
-        ///     <see langword="null"/> means uniform distribution.
-        /// </param>
-        public int AsInt(int max, IDistribution distribution = null)
-        {
-            if (max < 0)
-            {
-                return 0;
-            }
-
-            uint delta = unchecked((uint)max);
-            return unchecked((int)AsUInt(delta, distribution));
-        }
-
-        /// <summary>
-        ///     Converts the noise value to an <see langword="int"/>
-        ///     in the range [ <paramref name="min"/> ; <paramref name="max"/> ].
-        /// </summary>
-        /// <param name="min">Inclusive lower bounds.</param>
-        /// <param name="max">Inclusive upper bounds.</param>
-        /// <param name="distribution">
-        ///     Optional distribution to transform the output value.
-        ///     <see langword="null"/> means uniform distribution.
-        /// </param>
-        public int AsInt(int min, int max, IDistribution distribution = null)
-        {
-            if (max < min)
-            {
-                return min;
-            }
-
-            uint delta = unchecked((uint)(max - min));
-            return min + unchecked((int)AsUInt(delta, distribution));
-        }
-
-        /// <summary>
         ///     Converts the noise value to a <see langword="float"/>
         ///     in the range [ 0.0 ; <paramref name="max"/> ).
         /// </summary>
@@ -205,20 +211,17 @@ namespace Kott.Utilities
         ///     Optional distribution to transform the output value.
         ///     <see langword="null"/> means uniform distribution.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     When <paramref name="max"/> is strictly less than 0.0.
-        /// </exception>
         /// <remarks>
-        ///     In the case where <paramref name="max"/> is exactly equal to 0.0
+        ///     In the case where <paramref name="max"/> is less or equal to 0.0
         ///     the returned value will be equal to <paramref name="max"/>, violating mathematical
         ///     correctness (the range [ x ; x ) would be considered empty) for the sake of
-        ///     ignoring float precision errors.
+        ///     developer quality-of-life.
         /// </remarks>
         public float AsFloat(float max, IDistribution distribution = null)
         {
-            if (max < 0f)
+            if (max <= 0f)
             {
-                throw new ArgumentOutOfRangeException(nameof(max));
+                return 0f;
             }
 
             float range01 = AsFloat01(distribution);
@@ -235,20 +238,17 @@ namespace Kott.Utilities
         ///     Optional distribution to transform the output value.
         ///     <see langword="null"/> means uniform distribution.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     When <paramref name="max"/> is strictly less than <paramref name="min"/>.
-        /// </exception>
         /// <remarks>
-        ///     In the case where <paramref name="max"/> is exactly equal to <paramref name="min"/>
-        ///     the returned value will be equal to <paramref name="max"/>, violating mathematical
+        ///     In the case where <paramref name="max"/> is less or equal to <paramref name="min"/>
+        ///     the returned value will be equal to <paramref name="min"/>, violating mathematical
         ///     correctness (the range [ x ; x ) would be considered empty) for the sake of
-        ///     ignoring float precision errors.
+        ///     developer quality-of-life.
         /// </remarks>
         public float AsFloat(float min, float max, IDistribution distribution = null)
         {
-            if (max < min)
+            if (max <= min)
             {
-                throw new ArgumentOutOfRangeException(nameof(max));
+                return min;
             }
 
             float delta = max - min;

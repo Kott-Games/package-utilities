@@ -19,8 +19,8 @@ namespace Kott.Utilities
         public static string GetPseudoRandomVersionString(Version version)
         {
             int versionNumber = (version.Major << 24) + (version.Minor << 12) + version.Build;
-            versionNumber = NoiseUtility.SampleValue(versionNumber, 0).AsInt();
-            return versionNumber.ToString("X8");
+            NoiseValue versionNoise = NoiseUtility.SampleValue(versionNumber, 0);
+            return versionNoise.Bits.ToString("X8");
         }
     }
 }
