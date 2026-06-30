@@ -12,25 +12,28 @@ namespace Kott.Utilities
         {
             float Sample(float uniformValue);
         }
-
+        
         public class LogitDistribution : IDistribution
         {
             private readonly double _p;
             private readonly double _s;
+            private readonly double _s0;
 
             public LogitDistribution(float power = 5f)
             {
-                _p = 1f - power;
+                _p = 1.0 / power;
 
                 double k = 0.5 * Math.Exp(power);
                 _s = (k - 0.5) / (k + 0.5);
+                _s0 = 0.5 - _s * 0.5;
             }
 
             public float Sample(float uniformValue)
             {
-                double g = _s * (uniformValue - 0.5) + 0.5;
-                double x = _p * Math.Log(g / (1.0 - g));
-                return (float)x;
+                double g = _s * uniformValue + _s0;
+                double x = _p * Math.Log(g / (1.0 - g)) * 0.5 + 0.5;
+                float v = (float)x;
+                return v < 1f && v >= 0f ? v : 0f;
             }
         }
 
@@ -58,8 +61,11 @@ namespace Kott.Utilities
         /// </remarks>
         public uint AsUInt(uint max, IDistribution distribution = null)
         {
-            if (max <= 0) return 0;
-            
+            if (max <= 0)
+            {
+                return 0;
+            }
+
             if (distribution == null)
             {
                 ulong overflowValue = (ulong)Bits * max;
@@ -102,7 +108,7 @@ namespace Kott.Utilities
             float range01 = AsFloat01(distribution);
             return min + (uint)(range01 * (max - min));
         }
-        
+
         /// <summary>
         ///     Converts the noise value to aa <see langword="int"/>
         ///     in the range [ 0 ; <paramref name="max"/> ).
@@ -120,18 +126,21 @@ namespace Kott.Utilities
         /// </remarks>
         public int AsInt(int max, IDistribution distribution = null)
         {
-            if (max <= 0) return 0;
-            
+            if (max <= 0)
+            {
+                return 0;
+            }
+
             if (distribution == null)
             {
                 const int iOffset = int.MinValue;
                 const uint uOffset = unchecked((uint)iOffset);
-                
+
                 uint uMax = unchecked((uint)(max + int.MinValue));
-                
+
                 ulong overflowValue = (ulong)Bits * (uMax - uOffset);
                 uint uVal = uOffset + unchecked((uint)(overflowValue >> 32));
-                
+
                 return unchecked((int)(uVal + uOffset));
             }
 
@@ -166,13 +175,13 @@ namespace Kott.Utilities
             {
                 const int iOffset = int.MinValue;
                 const uint uOffset = unchecked((uint)iOffset);
-                
+
                 uint uMax = unchecked((uint)(max + iOffset));
                 uint uMin = unchecked((uint)(min + iOffset));
-                
+
                 ulong overflowValue = (ulong)Bits * (uMax - uMin);
                 uint uVal = uMin + unchecked((uint)(overflowValue >> 32));
-                
+
                 return unchecked((int)(uVal + uOffset));
             }
 

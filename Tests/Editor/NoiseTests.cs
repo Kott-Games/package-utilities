@@ -76,7 +76,19 @@ namespace Kott.Utilities.Tests
         [Test]
         public void AsFloat()
         {
+            CheckAsFloat(null);
+        }
+        
+        [Test]
+        public void AsFloatWithDistribution()
+        {
+            CheckAsFloat(new NoiseValue.LogitDistribution());
+        }
+        
+        private static void CheckAsFloat(NoiseValue.IDistribution distribution)
+        {
             CheckerAsFloat checker = new();
+            
             float[] rangeValues =
             {
                 0f,
@@ -88,13 +100,13 @@ namespace Kott.Utilities.Tests
                 123456789f,
             };
             
-            checker.Init();
+            checker.Init(distribution);
             CheckValues(checker);
             checker.Log();
 
             foreach (float value in rangeValues)
             {
-                checker.Init(value);
+                checker.Init(value, distribution);
                 CheckValues(checker);
                 checker.Log();
             }
@@ -102,7 +114,7 @@ namespace Kott.Utilities.Tests
             foreach (float valueA in rangeValues)
             foreach (float valueB in rangeValues)
             {
-                checker.Init(valueA, valueB);
+                checker.Init(valueA, valueB, distribution);
                 CheckValues(checker);
                 checker.Log();
             }
@@ -350,32 +362,36 @@ namespace Kott.Utilities.Tests
 
             private float? _min;
             private float? _max;
+            private NoiseValue.IDistribution _distribution;
 
-            public void Init()
+            public void Init(NoiseValue.IDistribution distribution = null)
             {
                 _counter = 0;
                 _sum = 0;
 
                 _min = null;
                 _max = null;
+                _distribution = distribution;
             }
             
-            public void Init(float max)
+            public void Init(float max, NoiseValue.IDistribution distribution = null)
             {
                 _counter = 0;
                 _sum = 0;
 
                 _min = null;
                 _max = max;
+                _distribution = distribution;
             }
 
-            public void Init(float min, float max)
+            public void Init(float min, float max, NoiseValue.IDistribution distribution = null)
             {
                 _counter = 0;
                 _sum = 0;
 
                 _min = min;
                 _max = max;
+                _distribution = distribution;
             }
 
             public void Log()
@@ -401,21 +417,19 @@ namespace Kott.Utilities.Tests
 
             public void Check(NoiseValue sampleValue)
             {
-                float value = sampleValue.AsFloat01();
-                
                 if (_max == null)
                 {
-                    Track(Check01(sampleValue));
+                    Track(Check01(sampleValue, _distribution));
                     return;
                 }
 
                 if (_min == null)
                 {
-                    Track(CheckMax(sampleValue, _max.Value));
+                    Track(CheckMax(sampleValue, _max.Value, _distribution));
                     return;
                 }
 
-                Track(CheckMinMax(sampleValue, _min.Value, _max.Value));
+                Track(CheckMinMax(sampleValue, _min.Value, _max.Value, _distribution));
             }
 
             private void Track(float? value)
@@ -429,9 +443,9 @@ namespace Kott.Utilities.Tests
                 _sum += value.Value;
             }
 
-            private static float? Check01(NoiseValue sampleValue)
+            private static float? Check01(NoiseValue sampleValue, NoiseValue.IDistribution distribution)
             {
-                float value = sampleValue.AsFloat01();
+                float value = sampleValue.AsFloat01(distribution);
                 
                 Assert.GreaterOrEqual(value, 0f, NoiseValueDebugString(sampleValue));
                 Assert.Less(value, 1f, NoiseValueDebugString(sampleValue));
@@ -439,9 +453,9 @@ namespace Kott.Utilities.Tests
                 return value;
             }
 
-            private static float? CheckMax(NoiseValue sampleValue, float max)
+            private static float? CheckMax(NoiseValue sampleValue, float max, NoiseValue.IDistribution distribution)
             {
-                float value = sampleValue.AsFloat(max);
+                float value = sampleValue.AsFloat(max, distribution);
 
                 if (max <= 0f)
                 {
@@ -455,9 +469,9 @@ namespace Kott.Utilities.Tests
                 return value;
             }
 
-            private static float? CheckMinMax(NoiseValue sampleValue, float min, float max)
+            private static float? CheckMinMax(NoiseValue sampleValue, float min, float max, NoiseValue.IDistribution distribution)
             {
-                float value = sampleValue.AsFloat(min, max);
+                float value = sampleValue.AsFloat(min, max, distribution);
 
                 if (max <= min)
                 {
