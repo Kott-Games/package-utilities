@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using Object = UnityEngine.Object;
 
 namespace Kott.Utilities
 {
@@ -57,6 +59,10 @@ namespace Kott.Utilities
 
         public void Release(T instance)
         {
+            if (instance is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
             _pool.Release(instance);
         }
 
