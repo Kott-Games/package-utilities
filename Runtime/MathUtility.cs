@@ -96,7 +96,7 @@ namespace Kott.Utilities
         {
             return mean + stdDev * InverseStandardNormalCDF(p);
         }
-        
+
         public static double TransformUniformToNormal01(double p)
         {
             const double mean = 0.5;
@@ -105,7 +105,7 @@ namespace Kott.Utilities
             double normalValue = TransformUniformToNormal(p, 0.5, 0.0);
             return Math.Clamp(normalValue, 0.0, 1.0);
         }
-        
+
         public static double UniformToLogit(double uniformValue, double power = 5.0)
         {
             double k = 0.5 * Math.Exp(power);

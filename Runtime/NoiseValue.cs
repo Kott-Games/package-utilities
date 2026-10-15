@@ -11,7 +11,7 @@ namespace Kott.Utilities
         {
             float Sample(float uniformValue);
         }
-        
+
         public class LogitDistribution : IDistribution
         {
             private readonly double _p;

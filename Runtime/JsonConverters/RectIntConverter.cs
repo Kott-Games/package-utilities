@@ -1,5 +1,5 @@
-using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Kott.Utilities.JsonConverters
@@ -8,7 +8,8 @@ namespace Kott.Utilities.JsonConverters
     {
         public override bool CanRead => false;
 
-        public override RectInt ReadJson(JsonReader reader, Type objectType, RectInt existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override RectInt ReadJson(JsonReader reader, Type objectType, RectInt existingValue,
+            bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

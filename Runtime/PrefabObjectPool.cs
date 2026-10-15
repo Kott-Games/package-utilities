@@ -63,6 +63,7 @@ namespace Kott.Utilities
             {
                 disposable.Dispose();
             }
+
             _pool.Release(instance);
         }
 
@@ -89,7 +90,7 @@ namespace Kott.Utilities
             GameObject gameObject = GetGameObject(instance);
             gameObject?.SetActive(true);
             _activeInstances.Add(instance);
-            
+
             if (!_orderHierarchy) return;
             gameObject?.transform.SetAsLastSibling();
         }
@@ -105,10 +106,10 @@ namespace Kott.Utilities
         {
             GameObject gameObject = GetGameObject(instance);
             if (!gameObject) return;
-            
+
             Object.Destroy(gameObject);
         }
-        
+
         private GameObject GetGameObject(T instance)
         {
             if (instance is GameObject gameObject) return gameObject;

@@ -7,7 +7,8 @@ namespace Kott.Utilities.Progress
     {
         public static DebugProgressReporter Instance { get; } = new DebugProgressReporter();
 
-        private DebugProgressReporter() { }
+        private DebugProgressReporter()
+        { }
 
         public void Report(ProgressReport value)
         {

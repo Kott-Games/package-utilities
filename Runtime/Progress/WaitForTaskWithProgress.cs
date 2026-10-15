@@ -20,7 +20,7 @@ namespace Kott.Utilities.Progress
         public bool MoveNext()
         {
             if (_progress == null) return !_task.IsCompleted;
-            
+
             TaskStatus status = _task.Status;
             float progress =
                 status <= TaskStatus.WaitingToRun ? 0f :

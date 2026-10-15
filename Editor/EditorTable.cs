@@ -23,6 +23,7 @@ namespace Kott.Utilities
         private delegate void InternalDrawDelegate(Rect position, int ci);
 
         public delegate void DrawHeaderDelegate(Rect position, TColumn column);
+
         public delegate void DrawCellDelegate(Rect position, TColumn column, TRow row);
 
         private List<TColumn> _columns = new();
@@ -37,16 +38,26 @@ namespace Kott.Utilities
         private DrawHeaderDelegate _drawHeader;
         private DrawCellDelegate _drawCell;
 
-        [SerializeField] public float HeaderHeight = 24f;
-        [SerializeField] public float RowHeight = 18f;
+        [SerializeField]
+        public float HeaderHeight = 24f;
 
-        [SerializeField] public float ColumnSpacing = 3f;
-        [SerializeField] public float RowSpacing = 3f;
+        [SerializeField]
+        public float RowHeight = 18f;
 
-        [SerializeField] public bool LockHeader = true;
-        [SerializeField] public bool LockFirstColumn = false;
+        [SerializeField]
+        public float ColumnSpacing = 3f;
 
-        [SerializeField] public bool CullCells = true;
+        [SerializeField]
+        public float RowSpacing = 3f;
+
+        [SerializeField]
+        public bool LockHeader = true;
+
+        [SerializeField]
+        public bool LockFirstColumn = false;
+
+        [SerializeField]
+        public bool CullCells = true;
 
         public IList<TColumn> Columns => _columns;
         public IList<TRow> Rows => _rows;
@@ -87,8 +98,10 @@ namespace Kott.Utilities
                     _visibleCellsXMin = Mathf.Min(_visibleCellsXMin, ci);
                     _visibleCellsXMax = Mathf.Max(_visibleCellsXMax, ci);
                 }
+
                 xPositionMin = xPositionMax + ColumnSpacing;
             }
+
             float yPositionMin = HeaderHeight + RowSpacing;
             for (int ri = 0; ri < _rows.Count; ri++)
             {
@@ -98,8 +111,10 @@ namespace Kott.Utilities
                     _visibleCellsYMin = Mathf.Min(_visibleCellsYMin, ri);
                     _visibleCellsYMax = Mathf.Max(_visibleCellsYMax, ri);
                 }
+
                 yPositionMin = yPositionMax + RowSpacing;
             }
+
             bool isHeaderRowVisible = 0f < cullRect.yMax && HeaderHeight > cullRect.yMin;
 
             Rect tableRect = GUILayoutUtility.GetRect(tableSize.x, tableSize.y);
@@ -154,6 +169,7 @@ namespace Kott.Utilities
                     DrawRow(rowRect, RowHeight, (cellRect, ci) => _drawCell(cellRect, _columns[ci], _rows[ri]));
                     drawOnTopCount--;
                 }
+
                 rowRectIterator.y += RowHeight + RowSpacing;
             }
 
@@ -169,6 +185,7 @@ namespace Kott.Utilities
                         rowRect.position += _rows[ri].PositionOffset;
                         DrawRow(rowRect, RowHeight, (cellRect, ci) => _drawCell(cellRect, _columns[ci], _rows[ri]));
                     }
+
                     rowRectIterator.y += RowHeight + RowSpacing;
                 }
             }
