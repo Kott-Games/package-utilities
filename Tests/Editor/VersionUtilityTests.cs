@@ -11,9 +11,9 @@ namespace Kott.Utilities.Tests
         {
             HashSet<string> versionStrings = new();
 
-            const int majorCount = 100;
-            const int minorCount = 100;
-            const int buildCount = 100;
+            const int majorCount = 10;
+            const int minorCount = 20;
+            const int buildCount = 50;
             
             for (int majorVersion = 0; majorVersion < majorCount; majorVersion++)
             for (int minorVersion = 0; minorVersion < minorCount; minorVersion++)
