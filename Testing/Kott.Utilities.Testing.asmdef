@@ -1,15 +1,11 @@
 {
-    "name": "Kott.Utilities.Editor.Tests",
-    "rootNamespace": "Kott.Utilities.Tests",
+    "name": "Kott.Utilities.Testing",
+    "rootNamespace": "Kott.Utilities.Testing",
     "references": [
         "GUID:27619889b8ba8c24980f49ee34dbb44a",
-        "GUID:0acc523941302664db1f4e527237feb3",
-        "GUID:b0f31b71235c2cf4ba6fdc19f8bc7546",
-        "GUID:23992a4295586a441a6ba244f0d0d242"
+        "GUID:b0f31b71235c2cf4ba6fdc19f8bc7546"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
