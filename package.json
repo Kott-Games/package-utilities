@@ -6,16 +6,13 @@
     "utility"
   ],
   "version": "1.0.0",
-  "description": "Editor and runtime utilities.",
+  "description": "Generic runtime and editor helpers for Unity: JSON.NET converters for Unity types, composable progress reporting, object pooling, a serializable dictionary, scroll-view UI helpers and small math/transform extensions.",
   "author": {
     "name": "Paul Kloetzing",
     "email": "kloetzing.paul@gmail.com"
   },
-  "contributors": [
-    "Paul Kloetzing"
-  ],
-  "licensesUrl": "",
-  "changelogUrl": "",
-  "documentationUrl": "",
+  "licensesUrl": "https://github.com/Kott-Games/package-utilities/blob/master/LICENSE.md",
+  "changelogUrl": "https://github.com/Kott-Games/package-utilities/blob/master/CHANGELOG.md",
+  "documentationUrl": "https://github.com/Kott-Games/package-utilities#readme",
   "dependencies": {}
 }
