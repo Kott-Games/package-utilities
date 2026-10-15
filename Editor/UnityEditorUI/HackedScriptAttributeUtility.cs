@@ -27,6 +27,7 @@ namespace UnityEditor
                 info.PropertyAttributes = GetFieldAttributes(info.Field);
                 _cachedPropertyData.Add(hash, info);
             }
+
             return info;
         }
 
@@ -50,7 +51,8 @@ namespace UnityEditor
                 return 0;
             }
 
-            int num = property.serializedObject.targetObject.GetInstanceID() ^ property.hashCodeForPropertyPathWithoutArrayIndex;
+            int num = property.serializedObject.targetObject.GetInstanceID() ^
+                      property.hashCodeForPropertyPathWithoutArrayIndex;
             if (property.propertyType == SerializedPropertyType.ObjectReference)
             {
                 num ^= property.objectReferenceInstanceIDValue;

@@ -1,7 +1,7 @@
-using Kott.Utilities.JsonConverters;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Kott.Utilities.JsonConverters;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Kott.Utilities
@@ -17,9 +17,11 @@ namespace Kott.Utilities
             public TValue Value;
         }
 
-        [SerializeField] private List<Pair> _pairs = new();
+        [SerializeField]
+        private List<Pair> _pairs = new();
 
-        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        { }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {

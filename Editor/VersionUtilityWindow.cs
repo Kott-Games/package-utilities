@@ -9,13 +9,13 @@ namespace Kott.Utilities
         private readonly GUIContent _majorVersionLabel = new("Major Version");
         private readonly GUIContent _minorVersionLabel = new("Minor Version");
         private readonly GUIContent _buildVersionLabel = new("Build Version");
-        
+
         private readonly GUIContent _applyButtonLabel = new("Apply Version");
 
         private const int MajorVersionBase = 0;
         private const int MinorVersionBase = 1;
         private const int BuildVersionBase = 1;
-        
+
         private int _majorVersion = MajorVersionBase;
         private int _minorVersion = MinorVersionBase;
         private int _buildVersion = BuildVersionBase;
@@ -32,7 +32,7 @@ namespace Kott.Utilities
                 _minorVersion = version.Minor;
                 _buildVersion = version.Build;
             }
-            
+
             ClampVersionNumbers();
         }
 
@@ -43,21 +43,21 @@ namespace Kott.Utilities
             _buildVersion = EditorGUILayout.DelayedIntField(_buildVersionLabel, _buildVersion);
 
             ClampVersionNumbers();
-            
+
             EditorGUILayout.Space();
-            
+
             Version version = new(_majorVersion, _minorVersion, _buildVersion);
             string versionString = VersionUtility.GetPseudoRandomVersionString(version);
-            
+
             EditorGUILayout.HelpBox($"Generated version: {version} ({versionString})", MessageType.Info);
-            
+
             if (GUILayout.Button(_applyButtonLabel))
             {
                 PlayerSettings.bundleVersion = version.ToString(3);
             }
-            
+
             EditorGUILayout.Space();
-            
+
             EditorGUILayout.HelpBox($"Current version string: {Application.version}", MessageType.Info);
         }
 
