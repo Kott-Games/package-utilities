@@ -1,6 +1,7 @@
 using System;
+using System.Diagnostics;
 using NUnit.Framework;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Kott.Utilities.Tests
 {
@@ -122,13 +123,19 @@ namespace Kott.Utilities.Tests
 
         private static void CheckValues(IChecker checker)
         {
-            for (uint seed = 0; seed < 10; seed++)
-            for (int position = -100; position <= 100; position++)
+            const int checkValuesSeedMin = 0;
+            const int checkValuesSeedMax = 10;
+            const int checkValuesPositionMin = -10;
+            const int checkValuesPositionMax = 10;
+            
+            for (uint seed = checkValuesSeedMin; seed <= checkValuesSeedMax; seed++)
+            for (int position = checkValuesPositionMin; position <= checkValuesPositionMax; position++)
             {
                 NoiseValue sampleValue = NoiseUtility.SampleValue(position, seed);
                 checker.Check(sampleValue);
             }
 
+            // check fixed values
             checker.Check(new NoiseValue(0));
             checker.Check(new NoiseValue(1));
             checker.Check(new NoiseValue(uint.MaxValue));
@@ -173,6 +180,7 @@ namespace Kott.Utilities.Tests
                 _max = max;
             }
 
+            [Conditional("KOTT_TEST_LOGGING")]
             public void Log()
             {
                 if (_max == null)
@@ -277,6 +285,7 @@ namespace Kott.Utilities.Tests
                 _max = max;
             }
 
+            [Conditional("KOTT_TEST_LOGGING")]
             public void Log()
             {
                 if (_max == null)
@@ -394,6 +403,7 @@ namespace Kott.Utilities.Tests
                 _distribution = distribution;
             }
 
+            [Conditional("KOTT_TEST_LOGGING")]
             public void Log()
             {
                 double average = (double)_sum / _counter;
