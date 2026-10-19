@@ -17,3 +17,4 @@ First public release.
 
 ### Fixed
 - `NoiseValue` no longer needs `System.Runtime.CompilerServices.Unsafe`.
+- `MathUtility.TransformUniformToNormal01` ignored its mean and standard deviation and always returned 0.5.
