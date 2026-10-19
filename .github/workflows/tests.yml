@@ -12,13 +12,8 @@ permissions:
 
 jobs:
   test:
-    name: ${{ matrix.name }}
+    name: Utilities
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Utilities
     steps:
       # the Unity editor image needs more space than a fresh runner has
       - name: Free disk space
@@ -26,20 +21,17 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - uses: actions/cache@v4
-        with:
-          path: TestProject~/Library
-          key: Library-${{ matrix.name }}-${{ hashFiles('TestProject~/Packages/manifest.json') }}
-          restore-keys: Library-${{ matrix.name }}-
-
+      # packageMode creates a temporary empty project and adds the repo root as a testable package
       - uses: game-ci/unity-test-runner@v4.3.2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: TestProject~
+          packageMode: true
+          projectPath: .
+          unityVersion: 6000.3.19f1
           customImage: unityci/editor:ubuntu-6000.3.19f1-base-3
           testMode: all
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Test results (${{ matrix.name }})
+          checkName: Test results (Utilities)
