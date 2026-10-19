@@ -12,21 +12,18 @@ permissions:
 
 jobs:
   test:
-    name: Utilities
+    name: Test Package
     runs-on: ubuntu-latest
     steps:
-      # the Unity editor image needs more space than a fresh runner has
-      - name: Free disk space
-        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-
-      - name: Checkout Package (Utilities)
+      - name: Checkout Package
         uses: actions/checkout@v4
         with:
           path: kott-utilities
           fetch-depth: 1
 
       # packageMode creates a temporary empty project and adds the repo root as a testable package
-      - uses: game-ci/unity-test-runner@v4 #.3.2
+      - name: Run Package Tests
+        uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -35,7 +32,6 @@ jobs:
           packageMode: true
           projectPath: kott-utilities
           unityVersion: 6000.3.19f1
-          # customImage: unityci/editor:ubuntu-6000.3.19f1-base-3
           testMode: All # runs PlayMode and EditMode tests
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: Test results (Utilities)
