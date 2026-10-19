@@ -3,6 +3,7 @@
 Generic runtime and editor helpers for Unity, shared by [Kott Scopes](https://github.com/Kott-Games/package-scopes)
 and Kott Configs.
 
+[![Tests](https://github.com/Kott-Games/package-utilities/actions/workflows/tests.yml/badge.svg)](https://github.com/Kott-Games/package-utilities/actions/workflows/tests.yml)
 ![Unity 6000.0+](https://img.shields.io/badge/Unity-6000.0%2B-black?logo=unity)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue)
 
