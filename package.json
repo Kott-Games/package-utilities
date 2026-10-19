@@ -14,5 +14,8 @@
   "licensesUrl": "https://github.com/Kott-Games/package-utilities/blob/master/LICENSE.md",
   "changelogUrl": "https://github.com/Kott-Games/package-utilities/blob/master/CHANGELOG.md",
   "documentationUrl": "https://github.com/Kott-Games/package-utilities#readme",
-  "dependencies": {}
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1",
+    "com.unity.ugui": "2.0.0"
+  }
 }
