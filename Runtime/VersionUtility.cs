@@ -15,7 +15,7 @@ namespace Kott.Utilities
 
             return version;
         }
-        
+
         public static string GetPseudoRandomVersionString(Version version)
         {
             int versionNumber = (version.Major << 24) + (version.Minor << 12) + version.Build;

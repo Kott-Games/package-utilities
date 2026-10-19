@@ -31,19 +31,39 @@ namespace Kott.Utilities.UI
         }
 
         [Header("References")]
-        [SerializeField] private UpdatableScrollRect _scrollRect;
-        [SerializeField] private TElement _elementPrefab;
+        [SerializeField]
+        private UpdatableScrollRect _scrollRect;
+
+        [SerializeField]
+        private TElement _elementPrefab;
 
         [Header("Settings")]
-        [SerializeField] private GridLayoutGroup.Corner _startCorner = GridLayoutGroup.Corner.UpperLeft;
-        [SerializeField] private GridLayoutGroup.Axis _startAxis = GridLayoutGroup.Axis.Horizontal;
-        [SerializeField] protected Vector2 _cellSize = new(100f, 100f);
-        [SerializeField] protected Vector2 _spacing = new(0f, 0f);
-        [SerializeField] protected Vector4 _padding = new(0f, 0f, 0f, 0f);
-        [SerializeField] private FlexMode _flexMode = FlexMode.None;
-        [SerializeField] private FillMode _fillMode = FillMode.Fixed;
-        [SerializeField] private int _fillCount = 3;
-        [SerializeField] private float _viewPadding = 100f;
+        [SerializeField]
+        private GridLayoutGroup.Corner _startCorner = GridLayoutGroup.Corner.UpperLeft;
+
+        [SerializeField]
+        private GridLayoutGroup.Axis _startAxis = GridLayoutGroup.Axis.Horizontal;
+
+        [SerializeField]
+        protected Vector2 _cellSize = new(100f, 100f);
+
+        [SerializeField]
+        protected Vector2 _spacing = new(0f, 0f);
+
+        [SerializeField]
+        protected Vector4 _padding = new(0f, 0f, 0f, 0f);
+
+        [SerializeField]
+        private FlexMode _flexMode = FlexMode.None;
+
+        [SerializeField]
+        private FillMode _fillMode = FillMode.Fixed;
+
+        [SerializeField]
+        private int _fillCount = 3;
+
+        [SerializeField]
+        private float _viewPadding = 100f;
 
         private PrefabObjectPool<TElement> _elementPool;
         private List<TElement> _visibleElements = new();
@@ -129,9 +149,9 @@ namespace Kott.Utilities.UI
             if (_fillMode != FillMode.Fixed)
             {
                 float countFloat = (viewportSizeStatic + spacingStatic) / (cellSizeStatic + spacingStatic);
-                countStatic = _fillMode == FillMode.MaxSize && _flexMode != FlexMode.None ?
-                    Mathf.FloorToInt(countFloat) :
-                    Mathf.CeilToInt(countFloat);
+                countStatic = _fillMode == FillMode.MaxSize && _flexMode != FlexMode.None
+                    ? Mathf.FloorToInt(countFloat)
+                    : Mathf.CeilToInt(countFloat);
                 countStatic = Mathf.Max(countStatic, 1);
             }
 

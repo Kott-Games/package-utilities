@@ -1,14 +1,15 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Kott.Utilities.JsonConverters
 {
     public class DictionaryArrayConverter : JsonConverter<IDictionary>
     {
-        public override IDictionary ReadJson(JsonReader reader, Type objectType, IDictionary existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override IDictionary ReadJson(JsonReader reader, Type objectType, IDictionary existingValue,
+            bool hasExistingValue, JsonSerializer serializer)
         {
             existingValue ??= (IDictionary)Activator.CreateInstance(objectType);
             existingValue.Clear();
@@ -38,7 +39,8 @@ namespace Kott.Utilities.JsonConverters
             }
             else
             {
-                List<KeyValuePair<object, object>> list = serializer.Deserialize<List<KeyValuePair<object, object>>>(reader);
+                List<KeyValuePair<object, object>> list =
+                    serializer.Deserialize<List<KeyValuePair<object, object>>>(reader);
                 foreach (KeyValuePair<object, object> item in list)
                     existingValue.Add(item.Key, item.Value);
             }

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Kott.Utilities
 {
@@ -12,7 +11,7 @@ namespace Kott.Utilities
         {
             float Sample(float uniformValue);
         }
-        
+
         public class LogitDistribution : IDistribution
         {
             private readonly double _p;
@@ -203,7 +202,7 @@ namespace Kott.Utilities
             const uint mantissaMask = 0x7FFFFFu; // 23 bits float mantissa
 
             uint bitsFloat = pattern | (mantissaMask & Bits);
-            float value12 = Unsafe.As<uint, float>(ref bitsFloat);
+            float value12 = BitConverter.Int32BitsToSingle((int)bitsFloat);
 
             // shift range from [ 1.0 ; 2.0 ) to [ 0.0 ; 1.0 )
             float value01 = value12 - 1f;
