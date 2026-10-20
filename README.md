@@ -21,7 +21,24 @@ and Kott Configs.
 
 ## Installation
 
-*Package Manager > + > Install package from git URL*:
+Via [OpenUPM](https://openupm.com/packages/com.kott.utilities/):
+
+```
+openupm add com.kott.utilities
+```
+
+or add the registry to `Packages/manifest.json` by hand:
+
+```json
+"scopedRegistries": [
+  { "name": "OpenUPM", "url": "https://package.openupm.com", "scopes": ["com.kott"] }
+],
+"dependencies": {
+  "com.kott.utilities": "1.0.0"
+}
+```
+
+Alternatively, *Package Manager > + > Install package from git URL*:
 
 ```
 https://github.com/Kott-Games/package-utilities.git#v1.0.0
